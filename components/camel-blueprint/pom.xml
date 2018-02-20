@@ -387,10 +387,16 @@
                 <phase>process-test-sources</phase>
                 <configuration>
                   <target>
-                    <echo>Copying XSD schema to be included in JAR</echo>
-                    <move file="${project.build.directory}/schema/schema1.xsd"
-                          tofile="${project.build.directory}/schema/camel-blueprint.xsd"/>
-                    <delete file="${project.build.directory}/schema/schema2.xsd"/>
+                    <taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="maven.plugin.classpath" />
+                    <if>
+                      <available file="${project.build.directory}/schema/schema1.xsd" />
+                      <then>
+                        <echo>Copying XSD schema to be included in JAR</echo>
+                        <move file="${project.build.directory}/schema/schema1.xsd"
+                              tofile="${project.build.directory}/schema/camel-blueprint.xsd"/>
+                        <delete file="${project.build.directory}/schema/schema2.xsd"/>
+                      </then>
+                    </if>
                   </target>
                 </configuration>
                 <goals>
