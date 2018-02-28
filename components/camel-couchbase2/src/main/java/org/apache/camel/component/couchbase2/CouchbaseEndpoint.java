@@ -144,8 +144,8 @@ public class CouchbaseEndpoint extends ScheduledPollEndpoint {
     @UriParam(label = "advanced", defaultValue = "-1")
     private long obsTimeout = DEFAULT_OBS_TIMEOUT;
 
-	Cluster cluster;
-	Bucket  couchbaseBucket;
+	private Cluster cluster;
+	private Bucket  couchbaseBucket;
 	
 	public CouchbaseEndpoint() {
     }
@@ -565,10 +565,12 @@ public class CouchbaseEndpoint extends ScheduledPollEndpoint {
     }
 
     private Bucket createClient() throws IOException, URISyntaxException {
-    	String[] hosts = additionalHosts.split(",");
         List<String> hostList = new ArrayList<String>();
         hostList.add(hostname);
-        hostList.addAll(Arrays.asList(hosts));
+        if (additionalHosts!=null) {
+        	String[] hosts = additionalHosts.split(",");
+            hostList.addAll(Arrays.asList(hosts));    		
+    	}
 
     	cluster = CouchbaseCluster.create(hostList);
         cluster.authenticate(username, password);

@@ -116,15 +116,15 @@ public class CouchbaseProducer extends DefaultProducer {
         }
 
         if (endpoint.getOperation().equals(COUCHBASE_PUT)) {
-            log.info("Type of operation: PUT");
+            log.info("Type of operation: PUT id {} expiry {} persistTo {} replicateTo {}", id, ttl, persistTo, replicateTo);
             Object obj = exchange.getIn().getBody();
             exchange.getOut().setBody(setDocument(id, ttl, obj, persistTo, replicateTo));
         } else if (endpoint.getOperation().equals(COUCHBASE_GET)) {
-            log.info("Type of operation: GET");
+            log.info("Type of operation: GET id {}", id);
             JsonDocument result = couchbaseBucket.get(id);
             exchange.getOut().setBody(result);
         } else if (endpoint.getOperation().equals(COUCHBASE_DELETE)) {
-            log.info("Type of operation: DELETE");
+            log.info("Type of operation: DELETE id {}", id);
             JsonDocument result = couchbaseBucket.remove(id);
             exchange.getOut().setBody(result);
         }
